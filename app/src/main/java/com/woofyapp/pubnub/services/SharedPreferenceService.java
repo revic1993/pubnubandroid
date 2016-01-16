@@ -1,0 +1,42 @@
+package com.woofyapp.pubnub.services;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.woofyapp.pubnub.application.Constants;
+
+/**
+ * Created by rujul on 1/15/2016.
+ */
+public class SharedPreferenceService {
+
+    private SharedPreferences spf;
+    private Context mContext;
+    private SharedPreferences.Editor editor;
+
+    public SharedPreferenceService(Context mContext) {
+        this.mContext = mContext;
+        spf = mContext.getSharedPreferences(Constants.SHARED_FILE_NAME,Context.MODE_PRIVATE);
+        editor = spf.edit();
+    }
+
+    public String getData(String key){
+        return spf.getString(key, Constants.DEFAULT);
+    }
+
+    public boolean putData(String key,String data){
+        editor.putString(key,data);
+        return editor.commit();
+    }
+
+    public boolean putData(String key,boolean data){
+        editor.putBoolean(key, data);
+        return editor.commit();
+    }
+
+    public boolean putData(String key,int data){
+        editor.putInt(key, data);
+        return editor.commit();
+    }
+
+}
