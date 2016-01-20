@@ -24,6 +24,7 @@ public class VolleyService {
     }
 
     public void makePostRequest(String url,Map<String,String> params, final VolleyInterface view){
+        params.put(Constants.TOKEN_NAME,Constants.TOKEN);
         JsonObjectRequest jsonObjectRequest =   new JsonObjectRequest
                     (Request.Method.POST, url, new JSONObject(params), new Response.Listener<JSONObject>() {
                     @Override

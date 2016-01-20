@@ -52,7 +52,6 @@ public class UserDetailsPresenter implements VolleyInterface {
         }
 
         Map<String,String> params = new HashMap<String,String>();
-        params.put(Constants.TOKEN_NAME,Constants.TOKEN);
         params.put(Constants.USER,username);
         params.put(Constants.MOBILE,phone);
         volley.makePostRequest(Constants.BASE_URL+Constants.NEW_USER,params,this);
@@ -67,7 +66,8 @@ public class UserDetailsPresenter implements VolleyInterface {
             spfs.putData(Constants.USER_EXIST,true);
             spfs.putData(Constants.ID,user.getString(Constants.ID));
             spfs.putData(Constants.NAME,user.getString(Constants.NAME));
-            spfs.putData(Constants.MOBILE,user.getInt(Constants.MOBILE));
+            spfs.putData(Constants.MOBILE,user.getString(Constants.MOBILE)+"");
+//            Log.d("MOBILEINFO",user.getInt(Constants.MOBILE)+" "+spfs.getStringData(Constants.MOBILE));
             view.startMainActivity(data.getBoolean(Constants.IS_USER_NEW));
         } catch (JSONException e) {
             e.printStackTrace();

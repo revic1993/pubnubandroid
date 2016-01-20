@@ -12,14 +12,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import com.woofyapp.pubnub.presenter.ChatPresenter;
 import com.woofyapp.pubnub.interfaces.ChatView;
+import com.woofyapp.pubnub.services.SharedPreferenceService;
 
 
 public class ChatActivity extends AppCompatActivity implements ChatView{
 
-    private ChatPresenter presenter;
-    private View channelDialog;
-    private EditText etAddChannel;
-    private AlertDialog dialog;
+     ChatPresenter presenter;
+     View channelDialog;
+     EditText etAddChannel;
+     AlertDialog dialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView{
         etAddChannel = (EditText) channelDialog.findViewById(R.id.etChannelName);
 
 
-        presenter = new ChatPresenter(this);
+        presenter = new ChatPresenter(this,new SharedPreferenceService(this));
         createChannelDialog();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabAddOrJoin);
@@ -69,6 +71,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView{
                     public void onClick(View v) {
                         if(presenter.onOkClicked()){
                             dialog.dismiss();
+                            presenter.addOrJoinGroup();
                         }
                     }
                 });
