@@ -2,18 +2,11 @@ package com.woofyapp.pubnub;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.woofyapp.pubnub.application.Constants;
 import com.woofyapp.pubnub.interfaces.SplashViewInterface;
 import com.woofyapp.pubnub.presenter.SplashPresenter;
 import com.woofyapp.pubnub.services.NetworkService;
@@ -50,12 +43,12 @@ public class SplashActivity extends AppCompatActivity implements SplashViewInter
     }
 
     @Override
-    public void startNewActivity(boolean isDefault) {
+    public void startNewActivity(boolean userExist) {
         Intent i;
-        if(isDefault)
+        if(!userExist)
             i = new Intent(SplashActivity.this,UserDetails.class);
         else
-            i = new Intent(SplashActivity.this,MainActivity.class);
+            i = new Intent(SplashActivity.this,ChatActivity.class);
         startActivity(i);
         finish();
     }

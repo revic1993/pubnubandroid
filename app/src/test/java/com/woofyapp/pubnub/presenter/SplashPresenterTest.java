@@ -47,7 +47,7 @@ public class SplashPresenterTest  {
     @Test
     public void shouldStartUserActivity() throws Exception{
         when(nws.isConnected(context)).thenReturn(true);
-        when(spfs.getData(Constants.MOBILE)).thenReturn(Constants.DEFAULT);
+        when(spfs.getBoolData(Constants.USER_EXIST)).thenReturn(false);
         pSplash.onTryClicked();
         verify(view).startNewActivity(true);
     }
@@ -55,7 +55,7 @@ public class SplashPresenterTest  {
     @Test
     public void shouldStartMainActivity() throws Exception{
         when(nws.isConnected(context)).thenReturn(true);
-        when(spfs.getData(Constants.MOBILE)).thenReturn(Constants.MOBILE_DEFAULT);
+        when(spfs.getBoolData(Constants.USER_EXIST)).thenReturn(true);
         pSplash.onTryClicked();
         verify(view).startNewActivity(false);
     }

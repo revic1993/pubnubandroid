@@ -34,7 +34,7 @@ public class SplashPresenter {
 
     public void onTryClicked() {
         if(nws.isConnected(context)){
-            view.startNewActivity(spfs.getData(Constants.MOBILE).compareTo(Constants.DEFAULT) == 0);
+            view.startNewActivity(spfs.getBoolData(Constants.USER_EXIST));
         }else{
             view.changeButtonVisibility();
         }
@@ -45,7 +45,7 @@ public class SplashPresenter {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    view.startNewActivity(spfs.getData(Constants.MOBILE).compareTo(Constants.DEFAULT) == 0);
+                    view.startNewActivity(spfs.getBoolData(Constants.USER_EXIST));
                 }
             }, Constants.SPLASH_TIME_OUT);
         }else{

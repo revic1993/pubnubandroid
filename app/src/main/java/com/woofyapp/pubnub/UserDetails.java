@@ -64,7 +64,7 @@ public class UserDetails extends AppCompatActivity implements UserDetailView{
 
     @Override
     public void startMainActivity(boolean aBoolean) {
-        Intent i = new Intent(this,MainActivity.class);
+        Intent i = new Intent(this,ChatActivity.class);
         i.putExtra(Constants.IS_USER_NEW,aBoolean);
         startActivity(i);
         finish();

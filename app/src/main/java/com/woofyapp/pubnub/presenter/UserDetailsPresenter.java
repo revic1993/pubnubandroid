@@ -64,7 +64,7 @@ public class UserDetailsPresenter implements VolleyInterface {
         try {
             JSONObject data = json.getJSONObject(Constants.DATA);
             JSONObject user = data.getJSONObject(Constants.USER);
-            spfs.putData(Constants.IS_USER_NEW, data.getBoolean(Constants.IS_USER_NEW));
+            spfs.putData(Constants.USER_EXIST,true);
             spfs.putData(Constants.ID,user.getString(Constants.ID));
             spfs.putData(Constants.NAME,user.getString(Constants.NAME));
             spfs.putData(Constants.MOBILE,user.getInt(Constants.MOBILE));

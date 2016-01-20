@@ -20,8 +20,16 @@ public class SharedPreferenceService {
         editor = spf.edit();
     }
 
-    public String getData(String key){
-        return spf.getString(key, Constants.DEFAULT);
+    public String getStringData(String key){
+        return spf.getString(key,Constants.DEFAULT);
+    }
+
+    public boolean getBoolData(String key){
+        return spf.getBoolean(key,false);
+    }
+
+    public int getIntData(String key){
+        return spf.getInt(key,0);
     }
 
     public boolean putData(String key,String data){
@@ -38,5 +46,6 @@ public class SharedPreferenceService {
         editor.putInt(key, data);
         return editor.commit();
     }
+
 
 }
