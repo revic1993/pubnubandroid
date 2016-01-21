@@ -27,4 +27,6 @@ dependencies {
     compile 'org.mockito:mockito-all:2.0.2-beta'
     compile 'com.mcxiaoke.volley:library-aar:1.0.1'
     compile 'com.pubnub:pubnub-android-debug:3.7.5'
+    compile files('libs/greendao-2.1.0.jar')
+
 }
