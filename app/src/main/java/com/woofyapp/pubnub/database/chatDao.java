@@ -31,7 +31,8 @@ public class chatDao extends AbstractDao<chat, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Message = new Property(1, String.class, "message", false, "MESSAGE");
         public final static Property From = new Property(2, String.class, "from", false, "FROM");
-        public final static Property GroupId = new Property(3, String.class, "groupId", false, "GROUP_ID");
+        public final static Property At = new Property(3, java.util.Date.class, "at", false, "AT");
+        public final static Property GroupId = new Property(4, String.class, "groupId", false, "GROUP_ID");
     };
 
     private DaoSession daoSession;
@@ -54,7 +55,8 @@ public class chatDao extends AbstractDao<chat, Long> {
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
                 "\"MESSAGE\" TEXT," + // 1: message
                 "\"FROM\" TEXT," + // 2: from
-                "\"GROUP_ID\" TEXT);"); // 3: groupId
+                "\"AT\" INTEGER," + // 3: at
+                "\"GROUP_ID\" TEXT);"); // 4: groupId
     }
 
     /** Drops the underlying database table. */
@@ -83,9 +85,14 @@ public class chatDao extends AbstractDao<chat, Long> {
             stmt.bindString(3, from);
         }
  
+        java.util.Date at = entity.getAt();
+        if (at != null) {
+            stmt.bindLong(4, at.getTime());
+        }
+ 
         String groupId = entity.getGroupId();
         if (groupId != null) {
-            stmt.bindString(4, groupId);
+            stmt.bindString(5, groupId);
         }
     }
 
@@ -108,7 +115,8 @@ public class chatDao extends AbstractDao<chat, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // message
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // from
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // groupId
+            cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)), // at
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // groupId
         );
         return entity;
     }
@@ -119,7 +127,8 @@ public class chatDao extends AbstractDao<chat, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setMessage(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setFrom(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setGroupId(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setAt(cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)));
+        entity.setGroupId(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
      }
     
     /** @inheritdoc */

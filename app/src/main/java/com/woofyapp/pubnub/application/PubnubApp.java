@@ -2,24 +2,33 @@ package com.woofyapp.pubnub.application;
 
 import android.app.Application;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.woofyapp.pubnub.database.DaoMaster;
+import com.woofyapp.pubnub.database.DaoSession;
 
 /**
  * Created by rujul on 1/16/2016.
  */
 public class PubnubApp extends Application{
-    private static PubnubApp mPubnub;
-    private RequestQueue mRequestQueue;
+    static PubnubApp mPubnub;
+    RequestQueue mRequestQueue;
+    DaoSession daoSession;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mPubnub = this;
+
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, Constants.DB_NAME, null);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        DaoMaster daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
     }
 
     public static synchronized PubnubApp getApp(){
@@ -37,6 +46,9 @@ public class PubnubApp extends Application{
         getRequestQueue().add(req);
     }
 
+    public DaoSession getDaoSession(){
+        return daoSession;
+    }
 
 
     public void cancelPendingRequests(Object tag) {
@@ -47,5 +59,11 @@ public class PubnubApp extends Application{
 
     public static void makeToast(String message){
         Toast.makeText(mPubnub, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+
     }
 }

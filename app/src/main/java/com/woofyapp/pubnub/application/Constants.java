@@ -28,7 +28,8 @@ public interface Constants {
             RUJUL="Rujul",
             REVIC="Revic",
             ALPHA_NUM="^[a-zA-Z0-9]*$",
-            ALPHA_NUM_ERROR = "Please enter only alphabets or numbers";
+            ALPHA_NUM_ERROR = "Please enter only alphabets or numbers",
+            DB_NAME="chattable";
 
         long SPLASH_TIME_OUT = 1000;
 
