@@ -22,6 +22,7 @@ public class Main {
         chat.addStringProperty("message");
         chat.addStringProperty("from");
         chat.addDateProperty("at");
+
         Property grpId = chat.addStringProperty("groupId").getProperty();
         chat.addToOne(group,grpId);
 

@@ -7,11 +7,14 @@ import com.woofyapp.pubnub.R;
 import com.woofyapp.pubnub.UserDetails;
 import com.woofyapp.pubnub.application.Constants;
 import com.woofyapp.pubnub.application.PubnubApp;
+import com.woofyapp.pubnub.database.DaoSession;
+import com.woofyapp.pubnub.database.Group;
 import com.woofyapp.pubnub.interfaces.UserDetailView;
 import com.woofyapp.pubnub.interfaces.VolleyInterface;
 import com.woofyapp.pubnub.services.SharedPreferenceService;
 import com.woofyapp.pubnub.services.VolleyService;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -66,9 +69,27 @@ public class UserDetailsPresenter implements VolleyInterface {
             spfs.putData(Constants.USER_EXIST,true);
             spfs.putData(Constants.ID,user.getString(Constants.ID));
             spfs.putData(Constants.NAME,user.getString(Constants.NAME));
-            spfs.putData(Constants.MOBILE,user.getString(Constants.MOBILE)+"");
-//            Log.d("MOBILEINFO",user.getInt(Constants.MOBILE)+" "+spfs.getStringData(Constants.MOBILE));
+            spfs.putData(Constants.MOBILE, user.getString(Constants.MOBILE) + "");
+
+            if(data.getBoolean(Constants.HAS_GROUP)){
+                JSONArray groupArray = data.getJSONArray(Constants.GROUP);
+                Group [] groups = new Group[groupArray.length()];
+                Log.d("greenDao",groupArray.length()+"");
+                DaoSession session = PubnubApp.getApp().getDaoSession();
+                for(int i=0;i<groupArray.length();i++){
+
+                    Group grp = new Group();
+                    JSONObject tempGroup = groupArray.getJSONObject(i);
+                    grp.setGroupName(tempGroup.getString(Constants.NAME));
+                    grp.setGroupId(tempGroup.getString(Constants.ID));
+                    groups[i] = grp;
+                }
+
+                session.getGroupDao().insertInTx(groups);
+            }
+
             view.startMainActivity(data.getBoolean(Constants.IS_USER_NEW));
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

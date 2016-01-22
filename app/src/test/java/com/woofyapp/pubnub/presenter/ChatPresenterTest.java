@@ -1,7 +1,9 @@
 package com.woofyapp.pubnub.presenter;
 
 import com.woofyapp.pubnub.application.Constants;
+import com.woofyapp.pubnub.database.DaoSession;
 import com.woofyapp.pubnub.interfaces.ChatView;
+import com.woofyapp.pubnub.services.SharedPreferenceService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,9 +26,15 @@ public class ChatPresenterTest {
     @Mock
     private ChatView view;
 
+    @Mock
+    private SharedPreferenceService spfs;
+
+    @Mock
+    private DaoSession session;
+
     @Before
     public void setUp(){
-        presenter = new ChatPresenter(view);
+        presenter = new ChatPresenter(view,spfs,session);
     }
 
     @Test

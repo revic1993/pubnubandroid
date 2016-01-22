@@ -9,6 +9,7 @@ public interface Constants {
             TAG = "REQUEST_TAG",
             MOBILE_DEFAULT = "9099918588",
             GROUP_NAME="groupName",
+            GROUP = "group",
             BASE_URL = "http://192.168.2.114:1337/",
             NEW_USER = "user/new",
             NEW_GROUP= "group/new",
@@ -29,7 +30,8 @@ public interface Constants {
             REVIC="Revic",
             ALPHA_NUM="^[a-zA-Z0-9]*$",
             ALPHA_NUM_ERROR = "Please enter only alphabets or numbers",
-            DB_NAME="chattable";
+            DB_NAME="chattable",
+            HAS_GROUP="hasGroup";
 
         long SPLASH_TIME_OUT = 1000;
 

@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.woofyapp.pubnub.application.Constants;
+import com.woofyapp.pubnub.database.DaoSession;
+import com.woofyapp.pubnub.database.Group;
 import com.woofyapp.pubnub.interfaces.ChatView;
 import com.woofyapp.pubnub.interfaces.VolleyInterface;
 import com.woofyapp.pubnub.services.SharedPreferenceService;
@@ -21,14 +23,16 @@ import java.util.regex.Pattern;
  */
 public class ChatPresenter implements VolleyInterface{
 
-    private ChatView view;
-    private String channelName;
-    private VolleyService volley;
-    private SharedPreferenceService spfs;
+    ChatView view;
+    String channelName;
+    VolleyService volley;
+    SharedPreferenceService spfs;
+    DaoSession session;
 
-    public ChatPresenter(ChatView view,SharedPreferenceService spfs) {
+    public ChatPresenter(ChatView view,SharedPreferenceService spfs,DaoSession session) {
         this.view = view;
         this.spfs = spfs;
+        this.session = session;
     }
 
 
@@ -58,7 +62,16 @@ public class ChatPresenter implements VolleyInterface{
     @Override
     public void onSuccess(JSONObject json) {
         try {
-            Log.d("groupcontroller",json.toString());
+            JSONObject responseGroup = json.getJSONObject(Constants.DATA);
+            Group group = new Group();
+            Log.d("greenDao",responseGroup.getString(Constants.ID));
+            Log.d("greenDao",responseGroup.getString(Constants.NAME));
+
+            group.setGroupId(responseGroup.getString(Constants.ID));
+            group.setGroupName(responseGroup.getString(Constants.NAME));
+            session.getGroupDao().insert(group);
+            view.dataSetChanged(group);
+
         }catch (Exception e){
             e.printStackTrace();
         }
