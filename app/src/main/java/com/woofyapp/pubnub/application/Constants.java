@@ -33,7 +33,7 @@ public interface Constants {
             DB_NAME="chattable",
             HAS_GROUP="hasGroup";
 
-        long SPLASH_TIME_OUT = 1000;
+        long SPLASH_TIME_OUT = 1500;
 
 
 

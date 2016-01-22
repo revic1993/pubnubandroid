@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ChatActivity extends AppCompatActivity implements ChatView{
+public class ChatActivity extends AppCompatActivity implements ChatView,GroupAdapter.GroupListClicked {
 
      ChatPresenter presenter;
      View channelDialog;
@@ -37,6 +37,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView{
      DaoSession daoSession;
      GroupAdapter groupAdapter;
      List<Group> groups;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,10 +120,15 @@ public class ChatActivity extends AppCompatActivity implements ChatView{
         if(groups.size()==0)
             groups = new ArrayList<Group>();
 
-        groupAdapter = new GroupAdapter(groups);
+        groupAdapter = new GroupAdapter(groups,this);
         rvGroupList.setLayoutManager(new LinearLayoutManager(this));
         rvGroupList.setAdapter(groupAdapter);
 
         presenter = new ChatPresenter(this,new SharedPreferenceService(this),daoSession);
+    }
+
+    @Override
+    public void onGroupItemClicked(int position) {
+        Group grp = groups.get(position);
     }
 }

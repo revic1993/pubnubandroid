@@ -1,6 +1,8 @@
 package com.woofyapp.pubnub.adapters;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -19,9 +21,10 @@ import java.util.List;
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHolder>{
 
     List<Group> groups;
-
-    public GroupAdapter(List<Group> groups){
+    private GroupListClicked mClickListener;
+    public GroupAdapter(List<Group> groups,GroupListClicked clickListener){
         this.groups = groups;
+        this.mClickListener = clickListener;
     }
 
     @Override
@@ -41,13 +44,26 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
         return groups.size();
     }
 
-    public static class GroupViewHolder extends RecyclerView.ViewHolder {
+    public class GroupViewHolder extends RecyclerView.ViewHolder
+    implements View.OnClickListener{
         TextView groupName;
+        CardView cvGroup;
 
         public GroupViewHolder(View view){
             super(view);
             groupName = (TextView) view.findViewById(R.id.tvGroupName);
+            cvGroup = (CardView) view.findViewById(R.id.cvGroup);
+            cvGroup.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v){
+            mClickListener.onGroupItemClicked(getPosition());
+        }
+    }
+
+    public interface GroupListClicked{
+        public void onGroupItemClicked(int position);
     }
 
 }

@@ -9,4 +9,5 @@ public interface ChatView {
     public String getChannelName();
     public void showChannelNameError(String message);
     public void dataSetChanged(Group group);
+
 }
