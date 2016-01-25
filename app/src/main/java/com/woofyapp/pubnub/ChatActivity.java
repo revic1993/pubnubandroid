@@ -2,6 +2,7 @@ package com.woofyapp.pubnub;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -14,19 +15,29 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.pubnub.api.Callback;
+import com.pubnub.api.Pubnub;
+import com.pubnub.api.PubnubException;
+import com.woofyapp.pubnub.adapters.BasicCallback;
 import com.woofyapp.pubnub.adapters.GroupAdapter;
+import com.woofyapp.pubnub.application.Constants;
 import com.woofyapp.pubnub.application.PubnubApp;
 import com.woofyapp.pubnub.database.DaoSession;
 import com.woofyapp.pubnub.database.Group;
+import com.woofyapp.pubnub.interfaces.PubNubInterface;
+import com.woofyapp.pubnub.models.PubNubInteractor;
 import com.woofyapp.pubnub.presenter.ChatPresenter;
 import com.woofyapp.pubnub.interfaces.ChatView;
 import com.woofyapp.pubnub.services.SharedPreferenceService;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ChatActivity extends AppCompatActivity implements ChatView,GroupAdapter.GroupListClicked {
+public class ChatActivity extends AppCompatActivity implements ChatView,PubNubInterface,GroupAdapter.GroupListClicked {
 
      ChatPresenter presenter;
      View channelDialog;
@@ -37,6 +48,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView,GroupAda
      DaoSession daoSession;
      GroupAdapter groupAdapter;
      List<Group> groups;
+     PubNubInteractor interactor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +65,36 @@ public class ChatActivity extends AppCompatActivity implements ChatView,GroupAda
                 showChannelDialog();
             }
         });
+        initPubnub();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(!interactor.isPubNubNull())
+            interactor.unsubscribeChannels();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        if (interactor!=null ){
+            if( interactor.isPubNubNull())
+            initPubnub();
+        }
+    }
+
+    private void initPubnub() {
+        interactor = PubnubApp.getApp().getInteractor();
+        interactor.setChatView(this);
+        if(groups.size()!=0){
+            String[] channelName = new String[groups.size()];
+            for(int i=0;i<groups.size();i++){
+                channelName[i] = groups.get(i).getGroupName();
+            }
+            interactor.subscribePubNub(channelName);
+        }
     }
 
     private void showChannelDialog() {
@@ -90,6 +132,8 @@ public class ChatActivity extends AppCompatActivity implements ChatView,GroupAda
 
     }
 
+
+
     @Override
     public String getChannelName() {
         return etAddChannel.getText().toString();
@@ -103,6 +147,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView,GroupAda
     @Override
     public void dataSetChanged(Group group) {
         groups.add(group);
+//        subscribePubNub(new String[]{group.getGroupName()});
         groupAdapter.notifyDataSetChanged();
     }
 
@@ -130,5 +175,14 @@ public class ChatActivity extends AppCompatActivity implements ChatView,GroupAda
     @Override
     public void onGroupItemClicked(int position) {
         Group grp = groups.get(position);
+        Intent i = new Intent(ChatActivity.this,GroupChat.class);
+        i.putExtra(Constants.ID, grp.getGroupId());
+        startActivity(i);
+    }
+
+
+    @Override
+    public void Success(String channelName, Object data) {
+        Log.d("successcallback",channelName+""+data);
     }
 }

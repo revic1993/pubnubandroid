@@ -8,4 +8,5 @@
     <string name="user_error">Please enter only alphabets</string>
     <string name="phone_error">Please enter only numbers</string>
     <string name="title_activity_chat">Groups</string>
+    <string name="title_activity_group_chat">GroupChat</string>
 </resources>

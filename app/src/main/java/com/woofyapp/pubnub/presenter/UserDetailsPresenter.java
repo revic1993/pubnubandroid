@@ -66,6 +66,12 @@ public class UserDetailsPresenter implements VolleyInterface {
         try {
             JSONObject data = json.getJSONObject(Constants.DATA);
             JSONObject user = data.getJSONObject(Constants.USER);
+
+            PubnubApp.mUser.username = user.getString(Constants.NAME);
+            PubnubApp.mUser.mobileNo = user.getString(Constants.MOBILE);
+            PubnubApp.mUser.userId = user.getString(Constants.ID);
+            PubnubApp.mUser.isSet = true;
+
             spfs.putData(Constants.USER_EXIST,true);
             spfs.putData(Constants.ID,user.getString(Constants.ID));
             spfs.putData(Constants.NAME,user.getString(Constants.NAME));
@@ -74,7 +80,6 @@ public class UserDetailsPresenter implements VolleyInterface {
             if(data.getBoolean(Constants.HAS_GROUP)){
                 JSONArray groupArray = data.getJSONArray(Constants.GROUP);
                 Group [] groups = new Group[groupArray.length()];
-                Log.d("greenDao",groupArray.length()+"");
                 DaoSession session = PubnubApp.getApp().getDaoSession();
                 for(int i=0;i<groupArray.length();i++){
 

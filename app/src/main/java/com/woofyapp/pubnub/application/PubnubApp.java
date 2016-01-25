@@ -1,7 +1,6 @@
 package com.woofyapp.pubnub.application;
 
 import android.app.Application;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import android.widget.Toast;
@@ -11,6 +10,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.woofyapp.pubnub.database.DaoMaster;
 import com.woofyapp.pubnub.database.DaoSession;
+import com.woofyapp.pubnub.models.PubNubInteractor;
+import com.woofyapp.pubnub.models.User;
 
 /**
  * Created by rujul on 1/16/2016.
@@ -19,12 +20,14 @@ public class PubnubApp extends Application{
     static PubnubApp mPubnub;
     RequestQueue mRequestQueue;
     DaoSession daoSession;
+    public static User mUser;
+    PubNubInteractor interactor;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mPubnub = this;
-
+        mUser = new User();
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, Constants.DB_NAME, null);
         SQLiteDatabase db = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
@@ -64,6 +67,12 @@ public class PubnubApp extends Application{
     @Override
     public void onTerminate() {
         super.onTerminate();
+    }
 
+    public PubNubInteractor getInteractor(){
+        if(interactor==null)
+            interactor = new PubNubInteractor(PubnubApp.mUser.mobileNo);
+
+        return interactor;
     }
 }

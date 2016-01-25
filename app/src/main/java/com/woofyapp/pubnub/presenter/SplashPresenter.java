@@ -8,6 +8,7 @@ import android.view.View;
 import com.woofyapp.pubnub.SplashActivity;
 import com.woofyapp.pubnub.UserDetails;
 import com.woofyapp.pubnub.application.Constants;
+import com.woofyapp.pubnub.application.PubnubApp;
 import com.woofyapp.pubnub.interfaces.SplashViewInterface;
 import com.woofyapp.pubnub.services.NetworkService;
 import com.woofyapp.pubnub.services.SharedPreferenceService;
@@ -21,7 +22,7 @@ public class SplashPresenter {
     private final SharedPreferenceService spfs;
     private final SplashViewInterface view;
     private Context context;
-
+    private boolean userExist;
     public SplashPresenter(NetworkService nws,
                            SharedPreferenceService spfs,
                            SplashViewInterface view,Context context) {
@@ -29,6 +30,8 @@ public class SplashPresenter {
         this.spfs = spfs;
         this.view = view;
         this.context = context;
+        this.userExist = spfs.getBoolData(Constants.USER_EXIST);
+        saveUser();
     }
 
 
@@ -45,11 +48,20 @@ public class SplashPresenter {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    view.startNewActivity(spfs.getBoolData(Constants.USER_EXIST));
+                    view.startNewActivity(userExist);
                 }
             }, Constants.SPLASH_TIME_OUT);
         }else{
             view.changeButtonVisibility();
+        }
+    }
+
+    private void saveUser(){
+        PubnubApp.mUser.isSet = userExist;
+        if(userExist){
+            PubnubApp.mUser.mobileNo = spfs.getStringData(Constants.MOBILE);
+            PubnubApp.mUser.username = spfs.getStringData(Constants.NAME);
+            PubnubApp.mUser.userId = spfs.getStringData(Constants.ID);
         }
     }
 }
