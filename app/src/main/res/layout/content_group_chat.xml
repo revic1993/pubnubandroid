@@ -37,6 +37,7 @@
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         android:padding="1dp"
+        android:clickable="true"
         android:layout_alignParentEnd="true"/>
 
     <LinearLayout
@@ -48,52 +49,12 @@
         android:layout_alignParentStart="true"
         android:layout_above="@id/ibSend">
 
-        <LinearLayout
-            android:id="@+id/vMy"
-            android:layout_height="70dp"
-            android:layout_width="200dp"
-            android:background="@drawable/my_bubble"
-            android:layout_gravity="right"
-            android:orientation="vertical"
-            android:layout_marginBottom="10dp"
-            android:padding="10dp"
-            >
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rvChat"
+            />
 
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="This is message from text"
-                android:id="@+id/tvMyMessage"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/vTheirs"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:background="@drawable/chat_bubble"
-            android:layout_gravity="left"
-            android:orientation="vertical"
-            android:padding="15dp"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Rujul"
-                android:id="@+id/tvTheirName"
-                android:textColor="@color/colorPrimaryDark"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="This is a message from chat"
-                android:id="@+id/tvTheirMessage"/>
-
-        </LinearLayout>
 
     </LinearLayout>
 

@@ -10,7 +10,7 @@ public interface Constants {
             MOBILE_DEFAULT = "9099918588",
             GROUP_NAME="groupName",
             GROUP = "group",
-            BASE_URL = "http://192.168.2.114:1337/",
+            BASE_URL = "http://52.89.19.51:1337/",
             NEW_USER = "user/new",
             NEW_GROUP= "group/new",
             TOKEN = "Oz32z2iXO82k7YNos9Fb",
@@ -31,7 +31,10 @@ public interface Constants {
             ALPHA_NUM="^[a-zA-Z0-9]*$",
             ALPHA_NUM_ERROR = "Please enter only alphabets or numbers",
             DB_NAME="chattable",
-            HAS_GROUP="hasGroup";
+            HAS_GROUP="hasGroup",
+            FROM="from",
+            AT="at",
+            DATE_FORMAT="yyyy/MM/dd HH:mm:ss";
 
         long SPLASH_TIME_OUT = 1500;
 

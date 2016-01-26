@@ -147,7 +147,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView,PubNubIn
     @Override
     public void dataSetChanged(Group group) {
         groups.add(group);
-//        subscribePubNub(new String[]{group.getGroupName()});
+        interactor.subscribePubNub(new String[]{group.getGroupName()});
         groupAdapter.notifyDataSetChanged();
     }
 
