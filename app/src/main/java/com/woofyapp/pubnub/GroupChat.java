@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -94,7 +95,7 @@ public class GroupChat extends AppCompatActivity implements GroupChatInterface,P
     }
 
     private void initPubnub() {
-        interactor = PubnubApp.getApp().getInteractor();
+        interactor = new PubNubInteractor(PubnubApp.mUser.mobileNo);
         interactor.setChatView(this);
         if(groups.size()!=0){
             String[] channelName = new String[groups.size()];
@@ -132,12 +133,13 @@ public class GroupChat extends AppCompatActivity implements GroupChatInterface,P
 
         adapter = new ChatAdapter(chats);
         rvChats.setAdapter(adapter);
+        rvChats.setLayoutManager(new LinearLayoutManager(this));
         presenter = new GroupChatPresenter(this,dao);
         ibSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.onSendClicked();
-                Log.d("checkingCalls", "onclick");
+
             }
         });
     }
@@ -154,7 +156,7 @@ public class GroupChat extends AppCompatActivity implements GroupChatInterface,P
 
     @Override
     public void insertChat(chat c) {
-        Log.d("checkingCalls", "insertChat");
+
         chats.add(c);
         adapter.notifyDataSetChanged();
 
@@ -180,14 +182,19 @@ public class GroupChat extends AppCompatActivity implements GroupChatInterface,P
             try {
                 String username = chatData.getString(Constants.FROM);
                 if(!username.equalsIgnoreCase(PubnubApp.mUser.username)){
-                    chat newChat = new chat();
+                    final chat newChat = new chat();
                     newChat.setFrom(username);
                     newChat.setAt(convertStringToDate(chatData.getString(Constants.AT)));
                     newChat.setMessage(chatData.getString(Constants.MESSAGE));
                     newChat.setGroupId(chatData.getString(Constants.ID));
                     dao.insert(newChat);
-                    chats.add(newChat);
-                    adapter.notifyDataSetChanged();
+                    GroupChat.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            chats.add(newChat);
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
                     Log.d("checkingCalls", "successPublish");
                 }
             } catch (JSONException e) {

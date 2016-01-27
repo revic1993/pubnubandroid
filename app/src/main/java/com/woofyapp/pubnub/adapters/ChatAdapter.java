@@ -1,6 +1,7 @@
 package com.woofyapp.pubnub.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 viewHolder = new MyChatHolder(v);
                 break;
         }
+
         return viewHolder;
 
     }
@@ -75,6 +77,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
+
         return chats.size();
     }
 

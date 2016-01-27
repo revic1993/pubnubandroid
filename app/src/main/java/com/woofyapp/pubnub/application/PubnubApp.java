@@ -21,7 +21,7 @@ public class PubnubApp extends Application{
     RequestQueue mRequestQueue;
     DaoSession daoSession;
     public static User mUser;
-    PubNubInteractor interactor;
+
 
     @Override
     public void onCreate() {
@@ -69,10 +69,4 @@ public class PubnubApp extends Application{
         super.onTerminate();
     }
 
-    public PubNubInteractor getInteractor(){
-        if(interactor==null)
-            interactor = new PubNubInteractor(PubnubApp.mUser.mobileNo);
-
-        return interactor;
-    }
 }

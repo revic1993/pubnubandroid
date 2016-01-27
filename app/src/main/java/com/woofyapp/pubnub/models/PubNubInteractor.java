@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.pubnub.api.Callback;
 import com.pubnub.api.Pubnub;
+import com.pubnub.api.PubnubError;
 import com.pubnub.api.PubnubException;
 import com.woofyapp.pubnub.adapters.BasicCallback;
 import com.woofyapp.pubnub.application.Constants;
@@ -33,15 +34,21 @@ public class PubNubInteractor {
             @Override
             public void successCallback(String channel, Object message) {
                 super.successCallback(channel, message);
+                Log.d("SubscribedChannel","success "+channel+message);
                 if(currentView!=null)
                     currentView.Success(channel,message);
             }
 
             @Override
             public void connectCallback(String channel, Object message) {
-                Log.d("Subscribed",channel);
+                Log.d("SubscribedChannel","connect "+channel + currentView.getClass());
             }
 
+            @Override
+            public void errorCallback(String channel, PubnubError error) {
+                super.errorCallback(channel, error);
+                Log.d("SubscribedChannel","error "+ channel + error.toString());
+            }
         };
         try {
             mPubnub.subscribe(channelName, cb);
@@ -56,6 +63,7 @@ public class PubNubInteractor {
 
     public void unsubscribeChannels(){
         mPubnub.unsubscribeAll();
+        currentView = null;
     }
 
     public boolean isPubNubNull(){

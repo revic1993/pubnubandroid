@@ -71,6 +71,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView,PubNubIn
     @Override
     protected void onStop() {
         super.onStop();
+        Log.d("lifecycle","stop called");
         if(!interactor.isPubNubNull())
             interactor.unsubscribeChannels();
     }
@@ -78,7 +79,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView,PubNubIn
     @Override
     protected void onRestart() {
         super.onRestart();
-
+        Log.d("lifecycle", "restart called");
         if (interactor!=null ){
             if( interactor.isPubNubNull())
             initPubnub();
@@ -86,7 +87,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView,PubNubIn
     }
 
     private void initPubnub() {
-        interactor = PubnubApp.getApp().getInteractor();
+        interactor = new PubNubInteractor(PubnubApp.mUser.mobileNo);
         interactor.setChatView(this);
         if(groups.size()!=0){
             String[] channelName = new String[groups.size()];
